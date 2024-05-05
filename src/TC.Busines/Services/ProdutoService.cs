@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TC.Busines.Interfaces;
 using TC.Busines.Models;
+using TC.Busines.Models.Validations;
 
 namespace TC.Busines.Services;
 public class ProdutoService : BaseService, IProdutoService
@@ -18,11 +19,15 @@ public class ProdutoService : BaseService, IProdutoService
 
     public async Task Adicionar(Produto produto)
     {
+        if(!ExecutarValidacao(new ProdutoValidation(), produto))
+            return;
         await _produtoRepository.Adicionar(produto);
     }
 
     public async Task Atualizar(Produto produto)
     {
+        if (!ExecutarValidacao(new ProdutoValidation(), produto))
+            return;
         await _produtoRepository.Atualizar(produto);
     }    
 
