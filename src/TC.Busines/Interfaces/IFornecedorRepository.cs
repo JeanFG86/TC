@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TC.Busines.Models;
 
 namespace TC.Busines.Interfaces;
-public interface IForncedorRepository : IRepository<Fornecedor>
+public interface IFornecedorRepository : IRepository<Fornecedor>
 {
     Task<Fornecedor> ObterFornecedorEndereco(Guid id);
     Task<Fornecedor> ObterFornecedorProdutosEndereco(Guid id);

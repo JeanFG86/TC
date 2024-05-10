@@ -5,9 +5,9 @@ using TC.Busines.Models.Validations;
 namespace TC.Busines.Services;
 public class FornecedorService : BaseService, IFornecedorService
 {
-    private readonly IForncedorRepository _fornecedorRepository;
+    private readonly IFornecedorRepository _fornecedorRepository;
 
-    public FornecedorService(IForncedorRepository forncedorRepository, INotificador notificador) : base(notificador)
+    public FornecedorService(IFornecedorRepository forncedorRepository, INotificador notificador) : base(notificador)
     {
         _fornecedorRepository = forncedorRepository;
     }
