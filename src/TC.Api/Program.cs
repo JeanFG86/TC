@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TC.Api.Configs;
 using TC.Data.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<MeuDbContext>(options =>
 });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.ResolveDependencies();
 
 var app = builder.Build();
 
