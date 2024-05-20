@@ -9,10 +9,12 @@ namespace TC.Busines.Services;
 public abstract class BaseService
 {
     private readonly INotificador _notificador;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public BaseService(INotificador notificador)
+    public BaseService(INotificador notificador, IUnitOfWork unitOfWork)
     {
         _notificador = notificador;
+        _unitOfWork = unitOfWork;
     }
 
     protected void Notificar(ValidationResult validationResult)
@@ -38,6 +40,15 @@ public abstract class BaseService
 
         Notificar(validator);
 
+        return false;
+    }
+
+    protected async Task<bool> Commit()
+    {
+        if(await _unitOfWork.Commit())
+            return true;
+
+        Notificar("Não foi possível salvar os dados");
         return false;
     }
 

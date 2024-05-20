@@ -7,7 +7,8 @@ public class FornecedorService : BaseService, IFornecedorService
 {
     private readonly IFornecedorRepository _fornecedorRepository;
 
-    public FornecedorService(IFornecedorRepository forncedorRepository, INotificador notificador) : base(notificador)
+    public FornecedorService(IFornecedorRepository forncedorRepository, INotificador notificador, IUnitOfWork unitOfWork) 
+        : base(notificador, unitOfWork)
     {
         _fornecedorRepository = forncedorRepository;
     }
@@ -23,7 +24,8 @@ public class FornecedorService : BaseService, IFornecedorService
             return;
         }
         
-        await _fornecedorRepository.Adicionar(forncedor);
+        _fornecedorRepository.Adicionar(forncedor);
+        await Commit();
     }
 
     public async Task Atualizar(Fornecedor forncedor)
@@ -37,7 +39,8 @@ public class FornecedorService : BaseService, IFornecedorService
             return;
         }
 
-        await _fornecedorRepository.Atualizar(forncedor);
+        _fornecedorRepository.Atualizar(forncedor);
+        await Commit();
     }    
 
     public async Task Remover(Guid id)
@@ -60,10 +63,11 @@ public class FornecedorService : BaseService, IFornecedorService
 
         if(endereco != null)
         {
-            await _fornecedorRepository.RemoverEnderecoFornecedor(endereco);
+            _fornecedorRepository.RemoverEnderecoFornecedor(endereco);
         }
 
-        await _fornecedorRepository.Remover(id);
+        _fornecedorRepository.Remover(id);
+        await Commit();
     }
 
     public void Dispose()

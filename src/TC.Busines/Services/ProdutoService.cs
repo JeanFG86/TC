@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TC.Busines.Interfaces;
+﻿using TC.Busines.Interfaces;
 using TC.Busines.Models;
 using TC.Busines.Models.Validations;
 
@@ -12,7 +7,8 @@ public class ProdutoService : BaseService, IProdutoService
 {
     private readonly IProdutoRepository _produtoRepository;
 
-    public ProdutoService(IProdutoRepository produtoRepository, INotificador notificador) : base(notificador)
+    public ProdutoService(IProdutoRepository produtoRepository, INotificador notificador, IUnitOfWork unitOfWork) 
+        : base(notificador, unitOfWork)
     {
         _produtoRepository = produtoRepository;
     }
@@ -21,19 +17,22 @@ public class ProdutoService : BaseService, IProdutoService
     {
         if(!ExecutarValidacao(new ProdutoValidation(), produto))
             return;
-        await _produtoRepository.Adicionar(produto);
+        _produtoRepository.Adicionar(produto);
+        await Commit();
     }
 
     public async Task Atualizar(Produto produto)
     {
         if (!ExecutarValidacao(new ProdutoValidation(), produto))
             return;
-        await _produtoRepository.Atualizar(produto);
+        _produtoRepository.Atualizar(produto);
+        await Commit();
     }    
 
     public async Task Remover(Guid id)
     {
-        await _produtoRepository.Remover(id);
+        _produtoRepository.Remover(id);
+        await Commit();
     }
 
     public void Dispose()
